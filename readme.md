@@ -5,7 +5,12 @@ KH_MALLOC is a simple implementation of memory management functions in C, such a
 # HEADER_FILES
 
 The header files contain the function declarations for the memory management functions provided by the KH_MALLOC library. Include these headers in your C programs to use the custom `malloc` and `free` implementations.
-
+## NOTE
+As of right now the following functions are not implemented
+```c
+kh_free(void *ptr) // Takes in a pointer to free memory
+kh_realloc(void *ptr) // Takes in a pointer to adjust the memory size 
+```
 ```c
 #include "kh_malloc.h"
 ```
