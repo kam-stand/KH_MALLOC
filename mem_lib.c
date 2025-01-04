@@ -97,6 +97,6 @@ void *kh_malloc(size_t size){
 
     curr->alloc = 1;
 
-    return (void *)curr;
+    return (void *)((char*)curr + sizeof(HEAP_CHUNK));
 
 }
