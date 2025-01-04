@@ -9,17 +9,26 @@ static HEAP_CHUNK *free_list;
 
 #define ALIGNMENT 8
 
-
-
 void print_free_list() {
     HEAP_CHUNK *temp = free_list;
-    while (temp) { 
-        printf("[%lu : %d: %p: %p]  ->", temp->size, temp->alloc, temp->prev, temp->next);
-        printf("\n");
+    if (!temp) {
+        printf("Free list is empty.\n");
+        return;
+    }
+
+    printf("Free list:\n");
+    printf("----------------------------------------------------------\n");
+    printf("|   Address    |    Size    | Allocated |   Prev   |   Next   |\n");
+    printf("----------------------------------------------------------\n");
+    while (temp) {
+        printf("| %p | %10lu | %10d | %p | %p |\n", 
+               (void *)temp, temp->size, temp->alloc, 
+               (void *)temp->prev, (void *)temp->next);
         temp = temp->next;
     }
-    printf("\n"); 
+    printf("----------------------------------------------------------\n");
 }
+
 
 void mem_init() {
     void *init_break = sbrk(0); 
@@ -59,6 +68,50 @@ HEAP_CHUNK *split_block(size_t alloc, HEAP_CHUNK *curr){
 }
 
 
+
+
+void mem_increase() {
+    // Increment the heap by HEAP_SIZE
+    void *curr_break = sbrk(0);   // Current program break
+    void *incr_break = sbrk(HEAP_SIZE);
+
+    if (incr_break == (void *)-1) {
+        perror("sbrk failed");    // Handle allocation failure
+        return;
+    }
+
+    // Cast the new break to a HEAP_CHUNK
+    HEAP_CHUNK *new_free_block = (HEAP_CHUNK *)incr_break;
+    new_free_block->size = HEAP_SIZE;
+    new_free_block->alloc = 0;
+    new_free_block->next = NULL;
+    new_free_block->prev = NULL;
+
+    // Attach to the end of the free list
+    HEAP_CHUNK *curr = free_list;
+    if (!curr) {
+        // If free_list is empty, make this the first block
+        free_list = new_free_block;
+    } else {
+        // Traverse to the end of the list
+        while (curr->next) {
+            curr = curr->next;
+        }
+        curr->next = new_free_block;
+        new_free_block->prev = curr;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 void *kh_malloc(size_t size){
 
     size_t alloc = align_request(size);
@@ -75,8 +128,9 @@ void *kh_malloc(size_t size){
      // If no suitable block found, request more memory from the system (e.g., using sbrk)
     if (!curr) { 
         // Handle allocation failure (e.g., no free space, sbrk failed)
-        printf("Not enough memory in heap\n");
-        return NULL; 
+        printf("Increasing heap...\n");
+        mem_increase();
+        return kh_malloc(size);
     }
 
     if (curr->size > alloc) {

@@ -53,7 +53,15 @@ void print_free_list();
  */
 void *kh_malloc(size_t size);
 
+/**
+ * @brief Increases the heap using sbrk() and add into free_list
+ *  
+ * @return void 
+ */
+void mem_increase();
 
+
+void coalescate();
 
 
 
