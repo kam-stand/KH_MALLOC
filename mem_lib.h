@@ -61,8 +61,23 @@ void *kh_malloc(size_t size);
 void mem_increase();
 
 
-void coalescate();
+/**
+ * @brief Merge two adjacent blocks that are not allocated
+ * 
+ */
+void coalesce_blocks();
 
+/**
+ * @brief Takes in a pointer and will allocate it as free
+ * 
+ * @param ptr 
+ */
+void kh_free(void *ptr);
 
+/**
+ * @brief Sorting the free list
+ * 
+ */
 
+void sort_free_list();
 #endif // MEM_LIB_H

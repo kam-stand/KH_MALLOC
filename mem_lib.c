@@ -67,6 +67,65 @@ HEAP_CHUNK *split_block(size_t alloc, HEAP_CHUNK *curr){
     return new_free_block;
 }
 
+void coalesce_blocks() {
+    printf("Entering coalesce_blocks\n");
+    if (!free_list) {
+        printf("Free list is empty\n");
+        return;
+    }
+
+    sort_free_list();
+    printf("Free list sorted\n");
+
+    HEAP_CHUNK *curr = free_list;
+    while (curr && curr->next) {
+        printf("Checking block at %p (size %zu) and next block at %p\n", 
+               (void*)curr, curr->size, (void*)curr->next);
+        if ((char*)curr + curr->size == (char*)curr->next) {
+    printf("Coalescing blocks at %p and %p\n", (void*)curr, (void*)curr->next);
+    curr->size += curr->next->size;
+    curr->next = curr->next->next;
+    if (curr->next) {
+        curr->next->prev = curr;
+    }
+} else {
+    printf("Not coalescing: %p + %zu != %p\n", (void*)curr, curr->size, (void*)curr->next);
+    curr = curr->next;
+}
+
+    }
+    printf("Exiting coalesce_blocks\n");
+}
+
+
+void sort_free_list() {
+    if (!free_list || !free_list->next) return;
+
+    HEAP_CHUNK *sorted = NULL;
+    HEAP_CHUNK *current = free_list;
+
+    while (current) {
+        HEAP_CHUNK *next = current->next;
+        HEAP_CHUNK **indirect = &sorted;
+
+        while (*indirect && *indirect < current) {
+            indirect = &(*indirect)->next;
+        }
+
+        current->next = *indirect;
+        *indirect = current;
+        current = next;
+    }
+
+    free_list = sorted;
+
+    // Update prev pointers
+    HEAP_CHUNK *prev = NULL;
+    for (HEAP_CHUNK *node = free_list; node; node = node->next) {
+        node->prev = prev;
+        prev = node;
+    }
+}
 
 
 
@@ -106,8 +165,28 @@ void mem_increase() {
 
 
 
+void kh_free(void *ptr) {
+    // Check for a NULL pointer
+    if (ptr == NULL) {
+        return;
+    }
 
+    // Adjust the pointer back to access the metadata (HEAP_CHUNK)
+    HEAP_CHUNK *temp = (HEAP_CHUNK *)((char *)ptr - sizeof(HEAP_CHUNK));
 
+    // Check if the block is already free
+    if (temp->alloc == 0) {
+        // Already free, no action needed
+        return;
+    }
+
+    // Mark the block as free
+    temp->alloc = 0;
+
+    // Coalesce adjacent free blocks
+    coalesce_blocks();
+    return;
+}
 
 
 
