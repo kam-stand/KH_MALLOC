@@ -52,9 +52,9 @@ HEAP_CHUNK *FIND_FIT(size_t req);
 /**
  * @brief A function that will return the starting region of data for user to use
  * 
- * @param reg 
+ * @param req 
  * @return void* 
  */
-void *HEAP_ALLOC(size_t reg);
+void *HEAP_ALLOC(size_t req);
 
 #endif // MEM_LIB_H

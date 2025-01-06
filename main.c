@@ -18,6 +18,7 @@ size_t heap_size_diff = (size_t)((char*)HEAP_END() - (char*)HEAP_START());
         printf("Heap size difference is incorrect. Expected: %zu bytes, Actual: %zu bytes\n", 
                (size_t)(1024 * 1024), heap_size_diff);
     }
-   
+
+   void *ptr = HEAP_ALLOC(100);
    return 0;
 }

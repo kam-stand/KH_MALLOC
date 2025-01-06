@@ -2,15 +2,19 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <sys/mman.h>
+
+
+
+
+#define TODO(msg) printf("TODO: %s\n", msg);
+
 
 static HEAP_CHUNK *HEAD = NULL; // Head of the linked list
 static char *HEAP = NULL;  // Pointer to the start of the heap
 static size_t HEAP_SIZE = 1024 * 1024; // 1 MB heap size (adjustable)
 static void *HEAP_START_ADDR; // starting address of heap
 static void *HEAP_END_ADDR; // ending address of heap
-#include <sys/mman.h>
-#include <unistd.h>
-#include "mem_lib.h"
 
 void HEAP_INIT() {
     // Allocate memory using mmap
@@ -57,7 +61,7 @@ HEAP_CHUNK *FIND_FIT(size_t req){
         if (curr->size >= req && curr->isFree) // if chunk is free and big enough
         {
             printf("CHUNK: %p\n", curr);
-            printf("CHUNK->BUFF%p\n", curr->buff);
+            printf("CHUNK->BUFF: %p\n", curr->buff);
             return curr;
     
         }
@@ -65,5 +69,27 @@ HEAP_CHUNK *FIND_FIT(size_t req){
     }
 
     return NULL; // No chunk found big enough
+
+}
+
+
+void *HEAP_ALLOC(size_t req){
+    if (req <= 0 || req > HEAP_SIZE) // make sure size
+    {
+        printf("Cannot allocate size <= 0 or size >= PAGE_SIZE\n");
+        return NULL;
+    }
+
+    HEAP_CHUNK *chunk = FIND_FIT(req); // try to find the first fit
+    if (chunk == NULL)
+    {
+        TODO("INCREASE SIZE OF THE HEAP");
+    }    
+
+    TODO("SPLIT BLOCK IF REQUIRED");
+
+    TODO("RETURN POINTER TO START OF REGION OF REQUEST SIZE")   
+    return NULL;
+
 
 }

@@ -1,32 +1,46 @@
-# KH_MALLOC
+# Simple Malloc Library
 
-KH_MALLOC is a simple implementation of memory management functions in C, such as `malloc` and `free`. This library uses `sbrk()` to initialize memory on the heap.
+This is a simple library to implement the functionality of `malloc` using `mmap`. This project is meant to be a learning process.
 
-# HEADER_FILES
+## Header File
 
-The header files contain the function declarations for the memory management functions provided by the KH_MALLOC library. Include these headers in your C programs to use the custom `malloc` and `free` implementations.
-## NOTE
-As of right now the following functions are not implemented
-```c
-kh_free(void *ptr) // Takes in a pointer to free memory
-kh_realloc(void *ptr) // Takes in a pointer to adjust the memory size 
-```
-```c
-#include "kh_malloc.h"
-```
+The header file `mem_lib.h` contains all of the function prototypes for the library.
 
-## How to Run
+## Functions to Implement
 
-To run the program, use the provided bash script `run.sh`. This script will compile the code and execute the program.
+The main functions to implement in this library are:
 
-```bash
-./run.sh
-```
+- `HEAP_ALLOC(size_t req)`: Allocates a block of memory of the requested size.
+- `HEAP_FREE(void *ptr)`: Frees the previously allocated memory block pointed to by `ptr`.
+- `HEAP_REALLOC(void *ptr, size_t resize)`: Resizes a previously allocated memory block.
 
-Make sure you have execution permissions for the script. You can set the permissions using:
+## Running the Program
 
-```bash
-chmod +x run.sh
-```
+To run the program, follow these steps:
 
-After setting the permissions, you can run the script to see the memory management functions in action.
+1. Clone the repository:
+
+   ```bash
+   git clone <https://github.com/kam-stand/KH_MALLOC.git>
+   ```
+
+2. Change into the root directory:
+
+   ```bash
+   cd SIMPLE_MALLOC
+   ```
+
+3. Make the `run.sh` script executable:
+
+   ```bash
+   chmod +x run.sh
+   ```
+
+4. Run the script:
+   ```bash
+   ./run.sh
+   ```
+
+## Arena Allocator
+
+There is a folder called `arena_allocator` that is used as inspiration and sometimes serves as base-level logic to implement certain functions like `merge` and `free` in a much more simplified manner.
