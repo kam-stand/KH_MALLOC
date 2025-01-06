@@ -34,4 +34,27 @@ void *HEAP_END();
 
 void HEAP_INIT();
 
+/**
+ * @brief grows the heap 
+ * !!! MIGHT NOT IMPLEMENT !!!
+ */
+void HEAP_GROW();
+
+/**
+ * @brief Traverses the free list to find the first chunk that is large enough to of size. 
+ * 
+ * @param req 
+ * @return HEAP_CHUNK*
+ */
+HEAP_CHUNK *FIND_FIT(size_t req);
+
+
+/**
+ * @brief A function that will return the starting region of data for user to use
+ * 
+ * @param reg 
+ * @return void* 
+ */
+void *HEAP_ALLOC(size_t reg);
+
 #endif // MEM_LIB_H

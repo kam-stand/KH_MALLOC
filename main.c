@@ -1,47 +1,23 @@
+#include <stddef.h>
 #include <stdio.h>
 #include "mem_lib.h"
+#include <unistd.h>
 
 int main() {
-    mem_init();
-    printf("Initial state:\n");
-    print_free_list();
+   void *initial_break = sbrk(0); // Get initial program break
+   HEAP_INIT(); 
 
-    void* ptr1 = kh_malloc(100);
-    printf("Allocated ptr1 (100 bytes): %p\n", ptr1);
-    print_free_list();
+   printf("HEAP START: %p\n", HEAP_START());
+   printf("HEAP END: %p\n", HEAP_END());
 
-    void* ptr2 = kh_malloc(50);
-    printf("Allocated ptr2 (50 bytes): %p\n", ptr2);
-    print_free_list();
+size_t heap_size_diff = (size_t)((char*)HEAP_END() - (char*)HEAP_START());
 
-    void* ptr3 = kh_malloc(200);
-    printf("Allocated ptr3 (200 bytes): %p\n", ptr3);
-    print_free_list();
-
-    printf("\nFreeing ptr2:\n");
-    kh_free(ptr2);
-    print_free_list();
-
-    printf("\nFreeing ptr1:\n");
-    kh_free(ptr1);
-    print_free_list();
-
-    printf("\nAllocating ptr4 (150 bytes):\n");
-    void* ptr4 = kh_malloc(150);
-    if (ptr4) {
-        printf("Allocated ptr4: %p\n", ptr4);
+    if (heap_size_diff == (size_t)(1024 * 1024)) {
+        printf("Heap size difference is correct: %zu bytes\n", heap_size_diff);
     } else {
-        printf("Allocation of ptr4 failed\n");
+        printf("Heap size difference is incorrect. Expected: %zu bytes, Actual: %zu bytes\n", 
+               (size_t)(1024 * 1024), heap_size_diff);
     }
-    print_free_list();
-
-    printf("\nFreeing ptr3:\n");
-    kh_free(ptr3);
-    print_free_list();
-
-    printf("\nFreeing ptr4:\n");
-    kh_free(ptr4);
-    print_free_list();
-
-    return 0;
+   
+   return 0;
 }

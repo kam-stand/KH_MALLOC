@@ -1,0 +1,58 @@
+HEAP begins: 0x7fff1ff9bc90
+HEAD size: 960
+HEAD isFree: 1
+HEAD next: (nil)
+HEAD prev: (nil)
+HEAD buff: 0x7fff1ff9bcb8
+The current HEAP_SIZE: 960
+====================
+Implementing malloc for first allocation
+Begins at: 0x7fff1ff9bc90
+Found available chunk: 0x7fff1ff9bcb8
+Before splitting:
+curr size: 960
+curr isFree: 1
+curr next: (nil)
+curr buff: 0x7fff1ff9bcb8
+New block created:
+b size: 820
+b isFree: 1
+b next: (nil)
+b prev: 0x7fff1ff9bc90
+b buff: 0x7fff1ff9bd44
+After first allocation:
+curr size: 100
+curr isFree: 0
+curr next: 0x7fff1ff9bd1c
+curr buff: 0x7fff1ff9bcb8
+Free list:
+Block at 0x7fff1ff9bd1c - size: 820, isFree: 1, next: (nil), prev: 0x7fff1ff9bc90
+====================
+-----------------------------------------------------
+Implementing malloc for second allocation
+Found available chunk: 0x7fff1ff9bd44
+Before splitting:
+curr size: 820
+curr isFree: 1
+curr next: (nil)
+curr buff: 0x7fff1ff9bd44
+New block created:
+b size: 580
+b isFree: 1
+b next: (nil)
+b prev: 0x7fff1ff9bd1c
+b buff: 0x7fff1ff9be34
+After second allocation:
+curr size: 200
+curr isFree: 0
+curr next: 0x7fff1ff9be0c
+curr buff: 0x7fff1ff9bd44
+Free list:
+Block at 0x7fff1ff9be0c - size: 580, isFree: 1, next: (nil), prev: 0x7fff1ff9bd1c
+====================
+-----------------------------------------------------
+Freeing all blocks...
+Freeing block at: 0x7fff1ff9bc90
+Freeing block at: 0x7fff1ff9bd1c
+Final free list:
+Block at 0x7fff1ff9bc90 - size: 960, isFree: 1, next: (nil), prev: (nil)
