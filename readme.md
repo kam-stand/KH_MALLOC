@@ -44,4 +44,10 @@ To run the program, follow these steps:
 
 ## Arena Allocator
 
-There is a folder called `arena_allocator` that is used as inspiration and sometimes serves as base-level logic to implement certain functions like `merge` and `free` in a much more simplified manner.
+There is a folder called `./ARENA_ALLOCATOR` that is used as inspiration and sometimes serves as base-level logic to implement certain functions like `merge` and `free` in a much more simplified manner.
+It might also contain useful links to help either implement your own version of a memory allocator
+
+## Note
+1) This is a project for me to better understand memory allocation
+2) There is possibly memory leaks as it may have ineffeciency and holes somewhere in the logic
+
