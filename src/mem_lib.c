@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include <string.h>
 
 #define TODO(msg) printf("TODO: %s\n", msg);
 
@@ -180,4 +181,31 @@ void HEAP_FREE(void *ptr) {
   MERGE_CHUNKS(chunk);
 
   return;
+}
+
+void *HEAP_CALLOC(size_t n_elements, size_t element_size) {
+    size_t total_size = n_elements * element_size;
+
+    // Allocate memory
+    HEAP_CHUNK *chunk = malloc(sizeof(HEAP_CHUNK) + total_size);
+    if (chunk == NULL) {
+        // Allocation failed
+        return NULL;
+    }
+
+    // Assuming `buff` is at the end of HEAP_CHUNK structure
+    void *buffer = (void *)((char *)chunk + sizeof(HEAP_CHUNK));
+
+    // Initialize memory to zero using a loop
+    for (size_t i = 0; i < total_size; i++) {
+        ((unsigned char *)buffer)[i] = 0;
+    }
+
+    return buffer;
+}
+
+
+void *HEAP_REALLOC(void *ptr, size_t req){
+  TODO("IMPLEMENT REALLOC");
+  return NULL;
 }

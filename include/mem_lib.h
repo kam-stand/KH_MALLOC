@@ -90,4 +90,22 @@ void *HEAP_ALLOC(size_t req);
  */
 void HEAP_FREE(void *ptr);
 
+
+/**
+ * @brief Creates an unallocated array of space of n elements of with size of n. all elements set to 0
+ * 
+ * @param n_elements 
+ * @param elements 
+ * @return void* 
+ */
+void *HEAP_CALLOC(size_t n_elements, size_t element);
+
+/**
+ * @brief Deallocate old pointer and return pointer to new chunk of specified size
+ * 
+ * @param ptr 
+ * @param req 
+ * @return void* 
+ */
+void *HEAP_REALLOC(void *ptr, size_t req);
 #endif // MEM_LIB_H
