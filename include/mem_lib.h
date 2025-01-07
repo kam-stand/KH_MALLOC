@@ -35,8 +35,8 @@ void *HEAP_END();
 void HEAP_INIT();
 
 /**
- * @brief grows the heap 
- * !!! MIGHT NOT IMPLEMENT !!!
+ * @brief grows the heap by incrementing the current program break
+ * 
  */
 void HEAP_GROW();
 
@@ -72,5 +72,14 @@ HEAP_CHUNK *SPLIT_CHUNK(HEAP_CHUNK *chunk, size_t req);
  * @return void* 
  */
 void *HEAP_ALLOC(size_t req);
+
+
+/**
+ * @brief Given an allocated pointer it return it to the heap
+ * 
+ * @param ptr 
+ * @return void* 
+ */
+void HEAP_FREE(void *ptr);
 
 #endif // MEM_LIB_H

@@ -24,10 +24,8 @@ int main() {
 
     printf("------------------------------------------------\n");
 
-   void *ptr = HEAP_ALLOC(100);
-
-   void *ptr2 = HEAP_ALLOC(100);
-
+    void *ptr1 = HEAP_ALLOC(100);
+    void *ptr2 = HEAP_ALLOC(1048396);
     print_free_list();
    return 0;
 }
