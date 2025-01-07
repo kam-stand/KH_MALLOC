@@ -22,10 +22,24 @@ int main() {
         (size_t)(1024 * 1024), heap_size_diff);
     }
 
-    printf("------------------------------------------------\n");
-
-    void *ptr1 = HEAP_ALLOC(100);
-    void *ptr2 = HEAP_ALLOC(1048396);
+    printf("n");
     print_free_list();
+    void *ptr1 = HEAP_ALLOC(100);
+    print_free_list();
+    void *ptr2 = HEAP_ALLOC(100);
+    print_free_list();
+    void *ptr3 = HEAP_ALLOC(100);
+    print_free_list();
+
+    HEAP_FREE(ptr1);
+    print_free_list();
+
+    HEAP_FREE(ptr2);
+    print_free_list();
+
+    HEAP_FREE(ptr3);
+    print_free_list();
+
+
    return 0;
 }

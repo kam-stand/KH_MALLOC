@@ -59,6 +59,7 @@ void print_free_list() {
   }
 
   printf("==============================================\n");
+  printf("\n");
 }
 
 HEAP_CHUNK *FIND_FIT(size_t req) {
@@ -106,6 +107,37 @@ HEAP_CHUNK *SPLIT_CHUNK(HEAP_CHUNK *chunk, size_t req) {
   }
   return NULL;
 }
+void MERGE_CHUNKS(HEAP_CHUNK *curr) {
+  printf("Merging chunks: current=%p, prev=%p, next=%p\n", curr, curr->prev, curr->next);
+
+    if (curr == NULL) return;
+
+    // Merge with the next block if it is free
+    if (curr->next != NULL && curr->next->isFree) {
+        HEAP_CHUNK *next_chunk = curr->next;
+        curr->size += sizeof(HEAP_CHUNK) + next_chunk->size; 
+        curr->next = next_chunk->next; // Update the next pointer
+        if (next_chunk->next != NULL) {
+            next_chunk->next->prev = curr; 
+        }
+    }
+
+    // Merge with the previous block if it is free
+    if (curr->prev != NULL && curr->prev->isFree) {
+        HEAP_CHUNK *prev_chunk = curr->prev;
+        prev_chunk->size += sizeof(HEAP_CHUNK) + curr->size; 
+        prev_chunk->next = curr->next; 
+        if (curr->next != NULL) {
+            curr->next->prev = prev_chunk; 
+        }
+        curr = prev_chunk; 
+    }
+
+    // Update HEAD if necessary
+    if (curr->prev == NULL) {
+        HEAD = curr; 
+    }
+}
 
 void *HEAP_ALLOC(size_t req) {
   if (req <= 0 || req > HEAP_SIZE) // make sure size
@@ -129,6 +161,22 @@ void *HEAP_ALLOC(size_t req) {
 }
 
 void HEAP_FREE(void *ptr) {
-  TODO("MUST IMPLEMENT FREE")
-  return;
+    if (ptr == NULL) {
+        return; // Do nothing if ptr is NULL
+    }
+
+    // Calculate the chunk pointer from the user-provided pointer
+    HEAP_CHUNK* chunk = (HEAP_CHUNK *)ptr-1; 
+
+    if (chunk < (HEAP_CHUNK*)HEAP_START_ADDR || 
+        chunk > (HEAP_CHUNK*)HEAP_END_ADDR) {
+        printf("Invalid pointer passed to HEAP_FREE.\n");
+        return; // Check for invalid pointer
+    }
+
+    chunk->isFree = 1;
+    
+
+    // Merge adjacent free chunks
+    MERGE_CHUNKS(chunk); 
 }

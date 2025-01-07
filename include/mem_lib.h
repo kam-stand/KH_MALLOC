@@ -65,6 +65,14 @@ HEAP_CHUNK *FIND_FIT(size_t req);
  */
 HEAP_CHUNK *SPLIT_CHUNK(HEAP_CHUNK *chunk, size_t req);
 
+
+/**
+ * @brief Will merge adjacent chunks, next and free, that is passed in
+ * 
+ * @param chunk 
+ */
+void MERGE_CHUNKS(HEAP_CHUNK *curr);
+
 /**
  * @brief A function that will return the starting region of data for user to use
  * 
