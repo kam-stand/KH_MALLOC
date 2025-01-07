@@ -66,16 +66,17 @@ HEAP_CHUNK *FIND_FIT(size_t req) {
   HEAP_CHUNK *best_fit = NULL;
 
   while (curr) {
-    if (curr->size == req && curr->isFree) {
-      return curr; // Perfect fit found
-    } else if (curr->size >= req && curr->isFree) {
+    if (curr->size >= req + sizeof(HEAP_CHUNK) && curr->isFree) { 
       if (best_fit == NULL || curr->size < best_fit->size) {
         best_fit = curr;
       }
+    } else if (curr->size == req && curr->isFree) { 
+      // If a perfect fit is found, return immediately
+      return curr; 
     }
     curr = curr->next;
   }
-  return best_fit; // Return the best-fit chunk if no perfect fit found
+  return best_fit; 
 }
 HEAP_CHUNK *SPLIT_CHUNK(HEAP_CHUNK *chunk, size_t req) {
   if (chunk->size > req + sizeof(HEAP_CHUNK)) {
@@ -111,16 +112,6 @@ void *HEAP_ALLOC(size_t req) {
   {
     printf("Cannot allocate size <= 0 or size >= PAGE_SIZE\n");
     return NULL;
-  }
-
-  HEAP_CHUNK *temp = HEAD;
-  while (temp) {
-    if (temp->size == req) {
-      printf("FOUND PERFECT SIZE %p\n", temp);
-      TODO("MUST REIMPLEMENT LOGIC FOR FIND_FIT(SIZE_T REQ).\nCURRENTLY DOES NOT GET EXACT REQ SIZE.\nMUST ALSO CHANGE LOGIC TO SEE IF PERFECT FIT IS MINIMUM")
-      break;
-    }
-    temp = temp->next;
   }
 
   HEAP_CHUNK *chunk = FIND_FIT(req); // try to find the first fit
