@@ -23,21 +23,48 @@ int main() {
     }
 
     printf("n");
-    print_free_list();
-    void *ptr1 = HEAP_ALLOC(100);
-    print_free_list();
-    void *ptr2 = HEAP_ALLOC(100);
-    print_free_list();
-    void *ptr3 = HEAP_ALLOC(100);
+    printf("Heap initialized.\n");
     print_free_list();
 
+    // Test Case 1: Single Block, No Merge
+    printf("\n=== Test Case 1: Single Block, No Merge ===\n");
+    void *ptr1 = HEAP_ALLOC(256);
+    printf("Allocated block: %p\n", ptr1);
     HEAP_FREE(ptr1);
     print_free_list();
 
+    // Test Case 2: Two Adjacent Free Blocks
+    printf("\n=== Test Case 2: Two Adjacent Free Blocks ===\n");
+    ptr1 = HEAP_ALLOC(256);
+    void *ptr2 = HEAP_ALLOC(256);
+    printf("Allocated blocks: %p, %p\n", ptr1, ptr2);
+    HEAP_FREE(ptr1);
     HEAP_FREE(ptr2);
     print_free_list();
 
+    // Test Case 3: Free Block Between Two Allocated Blocks
+    printf("\n=== Test Case 3: Free Block Between Two Allocated Blocks ===\n");
+    ptr1 = HEAP_ALLOC(256);
+    ptr2 = HEAP_ALLOC(256);
+    void *ptr3 = HEAP_ALLOC(256);
+    printf("Allocated blocks: %p, %p, %p\n", ptr1, ptr2, ptr3);
+    HEAP_FREE(ptr2); // Free the middle block
+    print_free_list();
+
+    // Test Case 4: Multiple Adjacent Free Blocks
+    printf("\n=== Test Case 4: Multiple Adjacent Free Blocks ===\n");
+    HEAP_FREE(ptr1);
     HEAP_FREE(ptr3);
+    print_free_list();
+
+    // Test Case 5: Free First and Last Block
+    printf("\n=== Test Case 5: Free First and Last Block ===\n");
+    ptr1 = HEAP_ALLOC(512);
+    ptr2 = HEAP_ALLOC(512);
+    void *ptr4 = HEAP_ALLOC(512);
+    printf("Allocated blocks: %p, %p, %p\n", ptr1, ptr2, ptr4);
+    HEAP_FREE(ptr1);
+    HEAP_FREE(ptr4);
     print_free_list();
 
 

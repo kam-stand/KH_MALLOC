@@ -21,10 +21,8 @@ void HEAP_INIT() {
     perror("mmap failed");
     return;
   }
-
   // Calculate and set the end address of the heap
   HEAP_END_ADDR = (char *)HEAP_START_ADDR + HEAP_SIZE;
-
   // Initialize the first block
   HEAP_CHUNK *first = (HEAP_CHUNK *)HEAP_START_ADDR;
   first->size = HEAP_SIZE - sizeof(HEAP_CHUNK);
@@ -50,14 +48,13 @@ void HEAP_GROW() {
 void print_free_list() {
   printf("==============================================\n");
   printf("Free List:\n");
-
   HEAP_CHUNK *temp = HEAD;
   while (temp) {
-    printf("Chunk: %p, Size: %ld, Next: %p, IsFree: %s\n", temp, temp->size,
-           temp->next, temp->isFree ? "Yes" : "No");
-    temp = temp->next;
+    printf("Chunk: %p, Size: %ld, Next: %p, IsFree: %s\n",
+          temp, temp->size,
+          temp->next, temp->isFree ? "Yes" : "No");
+          temp = temp->next;
   }
-
   printf("==============================================\n");
   printf("\n");
 }
@@ -67,17 +64,17 @@ HEAP_CHUNK *FIND_FIT(size_t req) {
   HEAP_CHUNK *best_fit = NULL;
 
   while (curr) {
-    if (curr->size >= req + sizeof(HEAP_CHUNK) && curr->isFree) { 
+    if (curr->size >= req + sizeof(HEAP_CHUNK) && curr->isFree) {
       if (best_fit == NULL || curr->size < best_fit->size) {
         best_fit = curr;
       }
-    } else if (curr->size == req && curr->isFree) { 
+    } else if (curr->size == req && curr->isFree) {
       // If a perfect fit is found, return immediately
-      return curr; 
+      return curr;
     }
     curr = curr->next;
   }
-  return best_fit; 
+  return best_fit;
 }
 HEAP_CHUNK *SPLIT_CHUNK(HEAP_CHUNK *chunk, size_t req) {
   if (chunk->size > req + sizeof(HEAP_CHUNK)) {
@@ -107,36 +104,39 @@ HEAP_CHUNK *SPLIT_CHUNK(HEAP_CHUNK *chunk, size_t req) {
   }
   return NULL;
 }
+
 void MERGE_CHUNKS(HEAP_CHUNK *curr) {
-  printf("Merging chunks: current=%p, prev=%p, next=%p\n", curr, curr->prev, curr->next);
+  printf("Merging chunks: current=%p, prev=%p, next=%p\n", curr, curr->prev,
+         curr->next);
 
-    if (curr == NULL) return;
+  if (curr == NULL)
+    return;
 
-    // Merge with the next block if it is free
-    if (curr->next != NULL && curr->next->isFree) {
-        HEAP_CHUNK *next_chunk = curr->next;
-        curr->size += sizeof(HEAP_CHUNK) + next_chunk->size; 
-        curr->next = next_chunk->next; // Update the next pointer
-        if (next_chunk->next != NULL) {
-            next_chunk->next->prev = curr; 
-        }
+  // Merge with the next block if it is free
+  if (curr->next != NULL && curr->next->isFree) {
+    HEAP_CHUNK *next_chunk = curr->next;
+    curr->size += sizeof(HEAP_CHUNK) + next_chunk->size;
+    curr->next = next_chunk->next; // Update the next pointer
+    if (next_chunk->next != NULL) {
+      next_chunk->next->prev = curr;
     }
+  }
 
-    // Merge with the previous block if it is free
-    if (curr->prev != NULL && curr->prev->isFree) {
-        HEAP_CHUNK *prev_chunk = curr->prev;
-        prev_chunk->size += sizeof(HEAP_CHUNK) + curr->size; 
-        prev_chunk->next = curr->next; 
-        if (curr->next != NULL) {
-            curr->next->prev = prev_chunk; 
-        }
-        curr = prev_chunk; 
+  // Merge with the previous block if it is free
+  if (curr->prev != NULL && curr->prev->isFree) {
+    HEAP_CHUNK *prev_chunk = curr->prev;
+    prev_chunk->size += sizeof(HEAP_CHUNK) + curr->size;
+    prev_chunk->next = curr->next;
+    if (curr->next != NULL) {
+      curr->next->prev = prev_chunk;
     }
+    curr = prev_chunk;
+  }
 
-    // Update HEAD if necessary
-    if (curr->prev == NULL) {
-        HEAD = curr; 
-    }
+  // Update HEAD if necessary
+  if (curr->prev == NULL) {
+    HEAD = curr;
+  }
 }
 
 void *HEAP_ALLOC(size_t req) {
@@ -161,22 +161,23 @@ void *HEAP_ALLOC(size_t req) {
 }
 
 void HEAP_FREE(void *ptr) {
-    if (ptr == NULL) {
-        return; // Do nothing if ptr is NULL
-    }
+  if (ptr == NULL) {
+    return; // Do nothing if ptr is NULL
+  }
 
-    // Calculate the chunk pointer from the user-provided pointer
-    HEAP_CHUNK* chunk = (HEAP_CHUNK *)ptr-1; 
+  // Calculate the chunk pointer from the user-provided pointer
+  HEAP_CHUNK *chunk = (HEAP_CHUNK *)ptr - 1;
 
-    if (chunk < (HEAP_CHUNK*)HEAP_START_ADDR || 
-        chunk > (HEAP_CHUNK*)HEAP_END_ADDR) {
-        printf("Invalid pointer passed to HEAP_FREE.\n");
-        return; // Check for invalid pointer
-    }
+  if (chunk < (HEAP_CHUNK *)HEAP_START_ADDR ||
+      chunk > (HEAP_CHUNK *)HEAP_END_ADDR) {
+    printf("Invalid pointer passed to HEAP_FREE.\n");
+    return; // Check for invalid pointer
+  }
 
-    chunk->isFree = 1;
-    
+  chunk->isFree = 1;
 
-    // Merge adjacent free chunks
-    MERGE_CHUNKS(chunk); 
+  // Merge adjacent free chunks
+  MERGE_CHUNKS(chunk);
+
+  return;
 }
