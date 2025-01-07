@@ -10,10 +10,10 @@ The header file `mem_lib.h` contains all of the function prototypes for the libr
 
 The main functions to implement in this library are:
 
-- `HEAP_ALLOC(size_t req)`: Allocates a block of memory of the requested size.
-- `HEAP_FREE(void *ptr)`: Frees the previously allocated memory block pointed to by `ptr`.
-- `HEAP_REALLOC(void *ptr, size_t resize)`: Resizes a previously allocated memory block.
-
+- [x] `HEAP_ALLOC(size_t req)`: Allocates a block of memory of the requested size.
+- [x] `HEAP_FREE(void *ptr)`: Frees the previously allocated memory block pointed to by `ptr`.
+- [ ] `HEAP_REALLOC(void *ptr, size_t resize)`: Resizes a previously allocated memory block.
+- [ ] `HEAP_GROW()`: Grows the heap if original is out of space
 ## Running the Program
 
 To run the program, follow these steps:
@@ -21,7 +21,7 @@ To run the program, follow these steps:
 1. Clone the repository:
 
    ```bash
-   git clone <https://github.com/kam-stand/KH_MALLOC.git>
+   git clone https://github.com/kam-stand/KH_MALLOC.git
    ```
 
 2. Change into the root directory:
