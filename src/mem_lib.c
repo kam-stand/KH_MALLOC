@@ -53,25 +53,64 @@ void *HEAP_END(){
     return HEAP_END_ADDR;
 }
 
-HEAP_CHUNK *FIND_FIT(size_t req){
+void print_free_list() {
+    printf("==============================================\n");
+    printf("Free List:\n");
 
-    HEAP_CHUNK *curr = HEAD; // set temp variable
-    while (curr)
-    {
-        if (curr->size >= req && curr->isFree) // if chunk is free and big enough
-        {
-            printf("CHUNK: %p\n", curr);
-            printf("CHUNK->BUFF: %p\n", curr->buff);
-            return curr;
-    
-        }
-        curr = curr->next; // traverse the list
+    HEAP_CHUNK *temp = HEAD;
+    while (temp) {
+        printf("Chunk: %p, Size: %ld, Next: %p, IsFree: %s\n", temp, temp->size, temp->next, temp->isFree ? "Yes" : "No");
+        temp = temp->next;
     }
 
-    return NULL; // No chunk found big enough
-
+    printf("==============================================\n");
 }
 
+
+HEAP_CHUNK *FIND_FIT(size_t req) {
+    HEAP_CHUNK *curr = HEAD;
+    HEAP_CHUNK *best_fit = NULL; 
+
+    while (curr) {
+        if (curr->size == req && curr->isFree) {
+            return curr; // Perfect fit found
+        } else if (curr->size >= req && curr->isFree) {
+            if (best_fit == NULL || curr->size < best_fit->size) {
+                best_fit = curr; 
+            }
+        }
+        curr = curr->next;
+    }
+
+    return best_fit; // Return the best-fit chunk if no perfect fit found
+}
+HEAP_CHUNK *SPLIT_CHUNK(HEAP_CHUNK *chunk, size_t req) {
+    if (chunk->size > req + sizeof(HEAP_CHUNK)) {
+        size_t remaining_size = chunk->size - req - sizeof(HEAP_CHUNK);
+
+        // Create a new chunk for the remaining space
+        HEAP_CHUNK *new_chunk = (HEAP_CHUNK *)((char *)chunk + req + sizeof(HEAP_CHUNK));
+        new_chunk->size = remaining_size;
+        new_chunk->isFree = 1;
+        new_chunk->buff = (char *)new_chunk + sizeof(HEAP_CHUNK);
+
+        // Update the current chunk
+        chunk->size = req + sizeof(HEAP_CHUNK);
+        chunk->isFree = 0;
+        chunk->buff = (char *)chunk + sizeof(HEAP_CHUNK);
+
+        // Update next/prev pointers
+        new_chunk->next = chunk->next;
+        new_chunk->prev = chunk;
+        if (chunk->next) {
+            chunk->next->prev = new_chunk;
+        }
+        chunk->next = new_chunk;
+
+        return chunk;
+    }
+    return NULL; 
+}
 
 void *HEAP_ALLOC(size_t req){
     if (req <= 0 || req > HEAP_SIZE) // make sure size
@@ -85,11 +124,13 @@ void *HEAP_ALLOC(size_t req){
     {
         TODO("INCREASE SIZE OF THE HEAP");
     }    
-
-    TODO("SPLIT BLOCK IF REQUIRED");
-
-    TODO("RETURN POINTER TO START OF REGION OF REQUEST SIZE")   
-    return NULL;
+    chunk = SPLIT_CHUNK(chunk, req);
+    if (chunk != NULL)
+    {
+        return (void *)chunk->buff;
+    }
+    
+    return NULL; // return null if cannot split or out of memory
 
 
 }

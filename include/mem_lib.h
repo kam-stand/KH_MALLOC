@@ -41,6 +41,13 @@ void HEAP_INIT();
 void HEAP_GROW();
 
 /**
+ * @brief prints free list
+ * 
+ */
+void print_free_list();
+
+
+/**
  * @brief Traverses the free list to find the first chunk that is large enough to of size. 
  * 
  * @param req 
@@ -48,6 +55,15 @@ void HEAP_GROW();
  */
 HEAP_CHUNK *FIND_FIT(size_t req);
 
+
+/**
+ * @brief Takes a pointer to a heap chunk to split from requested size and return
+ * 
+ * @param chunk 
+ * @param req 
+ * @return HEAP_CHUNK* 
+ */
+HEAP_CHUNK *SPLIT_CHUNK(HEAP_CHUNK *chunk, size_t req);
 
 /**
  * @brief A function that will return the starting region of data for user to use
