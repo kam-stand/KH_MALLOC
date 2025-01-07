@@ -1,6 +1,6 @@
 #include <stddef.h>
 #include <stdio.h>
-#include "mem_lib.h"
+#include "../include/mem_lib.h"
 #include <unistd.h>
 
 int main() {

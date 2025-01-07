@@ -1,4 +1,4 @@
-#include "mem_lib.h"
+#include "../include/mem_lib.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>

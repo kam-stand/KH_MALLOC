@@ -1,14 +1,9 @@
 #!/bin/bash
 
-# Compile the main.c and queue.c files
-gcc -o main main.c mem_lib.c
+main="./src/main.c"
+library="./src/mem_lib.c"
+bin="./bin"
+gcc -Wall -Wextra $main $library -o out
+mv ./out $bin
 
-# Check if compilation was successful
-if [ $? -eq 0 ]; then
-    # Run the compiled program
-    mv ./main ./build
-    ./build/main
-else
-    echo "Compilation failed."
-fi
-
+${bin}/out
