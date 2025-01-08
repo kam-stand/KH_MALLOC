@@ -12,7 +12,7 @@ The main functions to implement in this library are:
 
 - [x] `HEAP_ALLOC(size_t req)`: Allocates a block of memory of the requested size.
 - [x] `HEAP_FREE(void *ptr)`: Frees the previously allocated memory block pointed to by `ptr`.
-- [ ] `HEAP_REALLOC(void *ptr, size_t resize)`: Resizes a previously allocated memory block.
+- [x] `HEAP_REALLOC(void *ptr, size_t resize)`: Resizes a previously allocated memory block.
 - [ ] `HEAP_GROW()`: Grows the heap if original is out of space
 - [x] `HEAP_CALLOC(size_t nelem, size_t elsize)`: Allocate unused space of n elements of size n
 ## Running the Program
