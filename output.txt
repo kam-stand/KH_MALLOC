@@ -1,0 +1,119 @@
+[H[2J[3JHEAP START: 0x7f2b8d698000
+HEAP END: 0x7f2b8d798000
+Heap size difference is correct: 1048576 bytes
+
+Heap initialized.
+==============================================
+Free List:
+Chunk: 0x7f2b8d698000, Size: 1048536, Next: (nil), IsFree: Yes
+==============================================
+
+
+=== Test Case 1: Single Block, No Merge ===
+Allocated block: 0x7f2b8d698028
+Merging chunks: current=0x7f2b8d698000, prev=(nil), next=0x7f2b8d698128
+==============================================
+Free List:
+Chunk: 0x7f2b8d698000, Size: 1048576, Next: (nil), IsFree: Yes
+==============================================
+
+
+=== Test Case 2: Two Adjacent Free Blocks ===
+Allocated blocks: 0x7f2b8d698028, 0x7f2b8d698150
+Merging chunks: current=0x7f2b8d698000, prev=(nil), next=0x7f2b8d698128
+Merging chunks: current=0x7f2b8d698128, prev=0x7f2b8d698000, next=0x7f2b8d698250
+==============================================
+Free List:
+Chunk: 0x7f2b8d698000, Size: 1048656, Next: (nil), IsFree: Yes
+==============================================
+
+
+=== Test Case 3: Free Block Between Two Allocated Blocks ===
+Allocated blocks: 0x7f2b8d698028, 0x7f2b8d698150, 0x7f2b8d698278
+Merging chunks: current=0x7f2b8d698128, prev=0x7f2b8d698000, next=0x7f2b8d698250
+==============================================
+Free List:
+Chunk: 0x7f2b8d698000, Size: 296, Next: 0x7f2b8d698128, IsFree: No
+Chunk: 0x7f2b8d698128, Size: 296, Next: 0x7f2b8d698250, IsFree: Yes
+Chunk: 0x7f2b8d698250, Size: 296, Next: 0x7f2b8d698378, IsFree: No
+Chunk: 0x7f2b8d698378, Size: 1047768, Next: (nil), IsFree: Yes
+==============================================
+
+
+=== Test Case 4: Multiple Adjacent Free Blocks ===
+Merging chunks: current=0x7f2b8d698000, prev=(nil), next=0x7f2b8d698128
+Merging chunks: current=0x7f2b8d698250, prev=0x7f2b8d698000, next=0x7f2b8d698378
+==============================================
+Free List:
+Chunk: 0x7f2b8d698000, Size: 1048776, Next: (nil), IsFree: Yes
+==============================================
+
+
+=== Test Case 5: Free First and Last Block ===
+Allocated blocks: 0x7f2b8d698028, 0x7f2b8d698250, 0x7f2b8d698478
+Merging chunks: current=0x7f2b8d698000, prev=(nil), next=0x7f2b8d698228
+Merging chunks: current=0x7f2b8d698450, prev=0x7f2b8d698228, next=0x7f2b8d698678
+==============================================
+Free List:
+Chunk: 0x7f2b8d698000, Size: 552, Next: 0x7f2b8d698228, IsFree: Yes
+Chunk: 0x7f2b8d698228, Size: 552, Next: 0x7f2b8d698450, IsFree: No
+Chunk: 0x7f2b8d698450, Size: 1047712, Next: (nil), IsFree: Yes
+==============================================
+
+0000000000
+==============================================
+Free List:
+Chunk: 0x7f2b8d698000, Size: 552, Next: 0x7f2b8d698228, IsFree: Yes
+Chunk: 0x7f2b8d698228, Size: 552, Next: 0x7f2b8d698450, IsFree: No
+Chunk: 0x7f2b8d698450, Size: 1047712, Next: (nil), IsFree: Yes
+==============================================
+
+==============================================
+Free List:
+Chunk: 0x7f2b8d698000, Size: 140, Next: 0x7f2b8d69808c, IsFree: No
+Chunk: 0x7f2b8d69808c, Size: 412, Next: 0x7f2b8d698228, IsFree: Yes
+Chunk: 0x7f2b8d698228, Size: 552, Next: 0x7f2b8d698450, IsFree: No
+Chunk: 0x7f2b8d698450, Size: 1047712, Next: (nil), IsFree: Yes
+==============================================
+
+Merging chunks: current=0x7f2b8d698000, prev=(nil), next=0x7f2b8d69808c
+Realloc 1: 0x7f2b8d6980b4
+==============================================
+Free List:
+Chunk: 0x7f2b8d698000, Size: 140, Next: 0x7f2b8d69808c, IsFree: Yes
+Chunk: 0x7f2b8d69808c, Size: 240, Next: 0x7f2b8d69817c, IsFree: No
+Chunk: 0x7f2b8d69817c, Size: 172, Next: 0x7f2b8d698228, IsFree: Yes
+Chunk: 0x7f2b8d698228, Size: 552, Next: 0x7f2b8d698450, IsFree: No
+Chunk: 0x7f2b8d698450, Size: 1047712, Next: (nil), IsFree: Yes
+==============================================
+
+Realloc 2: 0x7f2b8d698478
+==============================================
+Free List:
+Chunk: 0x7f2b8d698000, Size: 140, Next: 0x7f2b8d69808c, IsFree: Yes
+Chunk: 0x7f2b8d69808c, Size: 240, Next: 0x7f2b8d69817c, IsFree: No
+Chunk: 0x7f2b8d69817c, Size: 172, Next: 0x7f2b8d698228, IsFree: Yes
+Chunk: 0x7f2b8d698228, Size: 552, Next: 0x7f2b8d698450, IsFree: No
+Chunk: 0x7f2b8d698450, Size: 1064, Next: 0x7f2b8d698878, IsFree: No
+Chunk: 0x7f2b8d698878, Size: 1046648, Next: (nil), IsFree: Yes
+==============================================
+
+==============================================
+Free List:
+Chunk: 0x7f2b8d698000, Size: 140, Next: 0x7f2b8d69808c, IsFree: Yes
+Chunk: 0x7f2b8d69808c, Size: 240, Next: 0x7f2b8d69817c, IsFree: No
+Chunk: 0x7f2b8d69817c, Size: 172, Next: 0x7f2b8d698228, IsFree: Yes
+Chunk: 0x7f2b8d698228, Size: 552, Next: 0x7f2b8d698450, IsFree: No
+Chunk: 0x7f2b8d698450, Size: 1064, Next: 0x7f2b8d698878, IsFree: No
+Chunk: 0x7f2b8d698878, Size: 1046648, Next: (nil), IsFree: Yes
+==============================================
+
+Merging chunks: current=0x7f2b8d698450, prev=0x7f2b8d698228, next=0x7f2b8d698878
+Merging chunks: current=0x7f2b8d69808c, prev=0x7f2b8d698000, next=0x7f2b8d69817c
+==============================================
+Free List:
+Chunk: 0x7f2b8d698000, Size: 632, Next: 0x7f2b8d698228, IsFree: Yes
+Chunk: 0x7f2b8d698228, Size: 552, Next: 0x7f2b8d698450, IsFree: No
+Chunk: 0x7f2b8d698450, Size: 1047752, Next: (nil), IsFree: Yes
+==============================================
+

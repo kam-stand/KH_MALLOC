@@ -72,7 +72,9 @@ void HEAP_FREE(void *ptr) {
 int main() {
     char HEAP[1000] = {0};
 
+
     printf("HEAP begins: %p\n", HEAP);
+    printf("HEAP ends: %p\n", HEAP+1000);
 
     // Initialize the first block
     block *first = (block *)HEAP;
@@ -81,6 +83,8 @@ int main() {
     first->next = NULL;
     first->prev = NULL;
     first->buff = (char *)(HEAP + sizeof(block));
+    
+    printf("HEAP ends_: %p\n", first->buff+first->size);
 
     if (HEAD == NULL) {
         HEAD = first;

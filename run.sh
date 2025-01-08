@@ -1,5 +1,5 @@
 #!/bin/bash
-
+clear
 main="./src/main.c"
 library="./src/mem_lib.c"
 bin="./bin"

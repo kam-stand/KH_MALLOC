@@ -27,7 +27,7 @@ void *HEAP_START();
 void *HEAP_END();
 
 /**
- * @brief initializes the heap using sbrk() to exactly 1MB
+ * @brief initializes the heap using MMAP() to exactly 1MB
  * 
  * @return void
  */
@@ -35,7 +35,7 @@ void *HEAP_END();
 void HEAP_INIT();
 
 /**
- * @brief grows the heap by incrementing the current program break
+ * @brief grows the heap TODO(!!!)
  * 
  */
 void HEAP_GROW();

@@ -20,12 +20,12 @@ int main() {
            (size_t)(1024 * 1024), heap_size_diff);
   }
 
-  printf("n");
+  printf("\n");
   printf("Heap initialized.\n");
   print_free_list();
 
   // Test Case 1: Single Block, No Merge
-  printf("\n=== Test Case 1: Single Block, No Merge ===\n");
+  printf("\n=== Test Case 1: Single Block, Should Merge?? ===\n");
   void *ptr1 = HEAP_ALLOC(256);
   printf("Allocated block: %p\n", ptr1);
   HEAP_FREE(ptr1);
@@ -66,9 +66,33 @@ int main() {
   print_free_list();
 
   int *arr = HEAP_CALLOC(10, sizeof(int)); // Allocates memory for 10 integers
-  for(int i = 0; i<10; i++){
-    printf("%d\n", arr[i]);
+  for (int i = 0; i < 10; i++) {
+    printf("%d", arr[i]);
   }
+  printf("\n");
+
+  print_free_list();
+
+  // Test Case 6: Reallocate to same size
+  void *ptr5 = HEAP_ALLOC(100);
+  print_free_list();
+  ptr5 = HEAP_REALLOC(ptr5, 200);
+  printf("Realloc 1: %p\n", ptr5);
+  print_free_list();
+  // Test Case 7: Reallocate NULL pointer
+  void *ptr6 = HEAP_REALLOC(NULL, 1024);
+  printf("Realloc 2: %p\n", ptr6);
+  print_free_list();
+
+  void *ptr8 = HEAP_ALLOC(100);
+  print_free_list();
+
+  HEAP_FREE(ptr8);
+  HEAP_FREE(ptr6);
+  HEAP_FREE(ptr5);
+
+  print_free_list();
+
 
   return 0;
 }

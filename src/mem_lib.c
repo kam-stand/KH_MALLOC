@@ -1,9 +1,10 @@
 #include "../include/mem_lib.h"
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/mman.h>
 #include <unistd.h>
-#include <string.h>
 
 #define TODO(msg) printf("TODO: %s\n", msg);
 
@@ -51,10 +52,9 @@ void print_free_list() {
   printf("Free List:\n");
   HEAP_CHUNK *temp = HEAD;
   while (temp) {
-    printf("Chunk: %p, Size: %ld, Next: %p, IsFree: %s\n",
-          temp, temp->size,
-          temp->next, temp->isFree ? "Yes" : "No");
-          temp = temp->next;
+    printf("Chunk: %p, Size: %ld, Next: %p, IsFree: %s\n", temp, temp->size,
+           temp->next, temp->isFree ? "Yes" : "No");
+    temp = temp->next;
   }
   printf("==============================================\n");
   printf("\n");
@@ -184,28 +184,52 @@ void HEAP_FREE(void *ptr) {
 }
 
 void *HEAP_CALLOC(size_t n_elements, size_t element_size) {
-    size_t total_size = n_elements * element_size;
+  size_t total_size = n_elements * element_size;
 
-    // Allocate memory
-    HEAP_CHUNK *chunk = malloc(sizeof(HEAP_CHUNK) + total_size);
-    if (chunk == NULL) {
-        // Allocation failed
-        return NULL;
-    }
+  // Allocate memory
+  HEAP_CHUNK *chunk = malloc(sizeof(HEAP_CHUNK) + total_size);
+  if (chunk == NULL) {
+    // Allocation failed
+    return NULL;
+  }
 
-    // Assuming `buff` is at the end of HEAP_CHUNK structure
-    void *buffer = (void *)((char *)chunk + sizeof(HEAP_CHUNK));
+  // Assuming `buff` is at the end of HEAP_CHUNK structure
+  void *buffer = (void *)((char *)chunk + sizeof(HEAP_CHUNK));
 
-    // Initialize memory to zero using a loop
-    for (size_t i = 0; i < total_size; i++) {
-        ((unsigned char *)buffer)[i] = 0;
-    }
+  // Initialize memory to zero using a loop
+  for (size_t i = 0; i < total_size; i++) {
+    ((unsigned char *)buffer)[i] = 0;
+  }
 
-    return buffer;
+  return buffer;
 }
 
 
-void *HEAP_REALLOC(void *ptr, size_t req){
-  TODO("IMPLEMENT REALLOC");
-  return NULL;
+void *HEAP_REALLOC(void *ptr, size_t req) {
+  if (ptr == NULL && req > 0) {
+    return HEAP_ALLOC(req); 
+  }
+
+  HEAP_CHUNK *curr = (HEAP_CHUNK *)ptr - 1; 
+
+  if (curr->size >= req) {
+    return curr; 
+  }
+
+  void *new_ptr = HEAP_ALLOC(req); 
+  if (new_ptr == NULL) {
+    return NULL; 
+  }
+
+  // Copy data manually
+  char* src = (char*)ptr;
+  char* dest = (char*)new_ptr;
+  for (size_t i = 0; i < curr->size; i++) {
+    *dest++ = *src++;
+  }
+
+  // Free the original chunk correctly
+  HEAP_FREE(ptr); 
+
+  return new_ptr;
 }
