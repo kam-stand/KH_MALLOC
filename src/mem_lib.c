@@ -204,32 +204,31 @@ void *HEAP_CALLOC(size_t n_elements, size_t element_size) {
   return buffer;
 }
 
-
 void *HEAP_REALLOC(void *ptr, size_t req) {
   if (ptr == NULL && req > 0) {
-    return HEAP_ALLOC(req); 
+    return HEAP_ALLOC(req);
   }
 
-  HEAP_CHUNK *curr = (HEAP_CHUNK *)ptr - 1; 
+  HEAP_CHUNK *curr = (HEAP_CHUNK *)ptr - 1;
 
   if (curr->size >= req) {
-    return curr; 
+    return curr;
   }
 
-  void *new_ptr = HEAP_ALLOC(req); 
+  void *new_ptr = HEAP_ALLOC(req);
   if (new_ptr == NULL) {
-    return NULL; 
+    return NULL;
   }
 
   // Copy data manually
-  char* src = (char*)ptr;
-  char* dest = (char*)new_ptr;
+  char *src = (char *)ptr;
+  char *dest = (char *)new_ptr;
   for (size_t i = 0; i < curr->size; i++) {
     *dest++ = *src++;
   }
 
   // Free the original chunk correctly
-  HEAP_FREE(ptr); 
+  HEAP_FREE(ptr);
 
   return new_ptr;
 }
